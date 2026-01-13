@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/meteosensei/static/css/main.e4f30f07.css",
+    "main.js": "/meteosensei/static/js/main.9eef0195.js",
+    "index.html": "/meteosensei/index.html",
+    "main.e4f30f07.css.map": "/meteosensei/static/css/main.e4f30f07.css.map",
+    "main.9eef0195.js.map": "/meteosensei/static/js/main.9eef0195.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e4f30f07.css",
+    "static/js/main.9eef0195.js"
+  ]
+}
