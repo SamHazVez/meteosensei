@@ -81,7 +81,3 @@ L'application vérifiera automatiquement les prévisions toutes les heures et vo
 - ✅ Pas d'authentification requise
 - ✅ Fonctionne entièrement côté client
 - ✅ HTTPS via GitHub Pages
-
-## 📝 Licence
-
-MIT
