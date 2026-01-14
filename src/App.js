@@ -8,17 +8,17 @@ import { useState, useEffect } from "react";
 import WeatherCard from "./components/WeatherCard";
 import LocationSelector from "./components/LocationSelector";
 import Settings from "./components/Settings";
+import ShortcutsGuide from "./components/ShortcutsGuide";
 import { getDefaultCity, getCityById } from "./data/quebecCities";
 import { fetchWeatherRSS } from "./services/rssParser";
 import { analyzeWeather, generateRainNotificationMessage } from "./services/weatherAnalyzer";
 import { 
   sendRainAlert, 
-  hasNotifiedToday, 
-  markNotificationSent,
   getPermissionStatus,
   isCityNotificationEnabled,
   hasNotifiedTodayForCity,
-  markNotificationSentForCity
+  markNotificationSentForCity,
+  getNotificationCities
 } from "./services/notificationService";
 
 export default function App() {
@@ -29,6 +29,7 @@ export default function App() {
   const [weatherAnalysis, setWeatherAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showShortcutsGuide, setShowShortcutsGuide] = useState(false);
 
   const loadWeather = async (cityId) => {
     setLoading(true);
@@ -66,13 +67,51 @@ export default function App() {
     }
   };
 
+  const checkAllMonitoredCities = async () => {
+    const monitoredCities = getNotificationCities();
+    
+    if (monitoredCities.length === 0 || getPermissionStatus() !== 'granted') {
+      return;
+    }
+
+    for (const cityId of monitoredCities) {
+      if (hasNotifiedTodayForCity(cityId)) {
+        continue;
+      }
+
+      try {
+        const city = getCityById(cityId);
+        if (!city) continue;
+
+        const weatherData = await fetchWeatherRSS(city.rssUrl);
+        const analysis = analyzeWeather(weatherData);
+
+        if (analysis.isRaining) {
+          const notificationData = {
+            location: city.name,
+            condition: analysis.condition,
+            temperature: analysis.temperature
+          };
+          
+          sendRainAlert(true, notificationData);
+          markNotificationSentForCity(cityId);
+        }
+      } catch (err) {
+        console.error(`[MeteoSensei] Erreur pour ${cityId}:`, err);
+      }
+    }
+  };
+
   useEffect(() => {
     loadWeather(selectedCityId);
     localStorage.setItem('selectedCity', selectedCityId);
+    
+    checkAllMonitoredCities();
   }, [selectedCityId]);
 
   const handleRefresh = () => {
     loadWeather(selectedCityId);
+    checkAllMonitoredCities();
   };
 
   return (
@@ -97,6 +136,21 @@ export default function App() {
           </button>
         </div>
 
+        <div className="ios-automation-banner">
+          <div className="banner-content">
+            <span className="banner-icon">📱</span>
+            <div className="banner-text">
+              <strong>Utilisateur iOS?</strong> Configurez l'automatisation pour des vérifications automatiques
+            </div>
+            <button 
+              className="btn-banner"
+              onClick={() => setShowShortcutsGuide(true)}
+            >
+              Guide
+            </button>
+          </div>
+        </div>
+
         <WeatherCard 
           weatherAnalysis={weatherAnalysis}
           loading={loading}
@@ -111,6 +165,10 @@ export default function App() {
           Données: Environnement et Changement Climatique Canada (ECCC)
         </small>
       </footer>
+
+      {showShortcutsGuide && (
+        <ShortcutsGuide onClose={() => setShowShortcutsGuide(false)} />
+      )}
     </div>
   );
 }
