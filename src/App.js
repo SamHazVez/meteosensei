@@ -15,7 +15,10 @@ import {
   sendRainAlert, 
   hasNotifiedToday, 
   markNotificationSent,
-  getPermissionStatus
+  getPermissionStatus,
+  isCityNotificationEnabled,
+  hasNotifiedTodayForCity,
+  markNotificationSentForCity
 } from "./services/notificationService";
 
 export default function App() {
@@ -42,10 +45,13 @@ export default function App() {
       
       setWeatherAnalysis(analysis);
 
-      if (analysis.isRaining && !hasNotifiedToday() && getPermissionStatus() === 'granted') {
+      if (analysis.isRaining && 
+          isCityNotificationEnabled(cityId) && 
+          !hasNotifiedTodayForCity(cityId) && 
+          getPermissionStatus() === 'granted') {
         const message = generateRainNotificationMessage(analysis);
-        sendRainAlert(message, analysis.condition);
-        markNotificationSent();
+        sendRainAlert(`${city.name}: ${message}`, analysis.condition);
+        markNotificationSentForCity(cityId);
       }
     } catch (err) {
       console.error('Erreur chargement météo:', err);

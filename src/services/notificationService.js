@@ -24,7 +24,7 @@ export function getPermissionStatus() {
 
 /**
  * Demande la permission pour les notifications
- * @returns {Promise<string>} - Status de la permission
+ * @returns {Promise<string>}
  */
 export async function requestNotificationPermission() {
   if (!isNotificationSupported()) {
@@ -50,8 +50,8 @@ export async function requestNotificationPermission() {
 
 /**
  * Envoie une notification
- * @param {string} title - Titre de la notification
- * @param {Object} options - Options de notification
+ * @param {string} title
+ * @param {Object} options
  * @returns {Notification|null}
  */
 export function sendNotification(title, options = {}) {
@@ -83,8 +83,8 @@ export function sendNotification(title, options = {}) {
 
 /**
  * Envoie une notification d'alerte de pluie
- * @param {string} message - Message de la notification
- * @param {string} details - Détails supplémentaires
+ * @param {string} message
+ * @param {string} details
  */
 export function sendRainAlert(message, details = '') {
   const options = {
@@ -130,4 +130,87 @@ export function markNotificationSent() {
  */
 export function resetNotificationMarker() {
   localStorage.removeItem('lastRainNotification');
+}
+
+/**
+ * Récupère la liste des villes surveillées pour les notifications
+ * @returns {Array<string>}
+ */
+export function getNotificationCities() {
+  const citiesJson = localStorage.getItem('notificationCities');
+  if (!citiesJson) return [];
+  
+  try {
+    return JSON.parse(citiesJson);
+  } catch (error) {
+    console.error('Erreur de parsing des villes:', error);
+    return [];
+  }
+}
+
+/**
+ * Définit la liste des villes surveillées pour les notifications
+ * @param {Array<string>} cityIds
+ */
+export function setNotificationCities(cityIds) {
+  localStorage.setItem('notificationCities', JSON.stringify(cityIds));
+}
+
+/**
+ * Ajoute une ville à surveiller
+ * @param {string} cityId
+ */
+export function addNotificationCity(cityId) {
+  const cities = getNotificationCities();
+  if (!cities.includes(cityId)) {
+    cities.push(cityId);
+    setNotificationCities(cities);
+  }
+}
+
+/**
+ * Retire une ville de la surveillance
+ * @param {string} cityId
+ */
+export function removeNotificationCity(cityId) {
+  const cities = getNotificationCities();
+  const filtered = cities.filter(id => id !== cityId);
+  setNotificationCities(filtered);
+}
+
+/**
+ * Vérifie si une ville est surveillée
+ * @param {string} cityId
+ * @returns {boolean}
+ */
+export function isCityNotificationEnabled(cityId) {
+  const cities = getNotificationCities();
+  return cities.includes(cityId);
+}
+
+/**
+ * Vérifie si une notification a déjà été envoyée aujourd'hui pour une ville
+ * @param {string} cityId - ID de la ville
+ * @returns {boolean}
+ */
+export function hasNotifiedTodayForCity(cityId) {
+  const lastNotification = localStorage.getItem(`lastRainNotification-${cityId}`);
+  if (!lastNotification) return false;
+  
+  const lastDate = new Date(parseInt(lastNotification));
+  const today = new Date();
+  
+  return (
+    lastDate.getDate() === today.getDate() &&
+    lastDate.getMonth() === today.getMonth() &&
+    lastDate.getFullYear() === today.getFullYear()
+  );
+}
+
+/**
+ * Marque qu'une notification a été envoyée aujourd'hui pour une ville
+ * @param {string} cityId - ID de la ville
+ */
+export function markNotificationSentForCity(cityId) {
+  localStorage.setItem(`lastRainNotification-${cityId}`, Date.now().toString());
 }
