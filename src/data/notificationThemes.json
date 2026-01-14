@@ -1,0 +1,46 @@
+{
+  "themes": [
+    {
+      "id": "sensei",
+      "name": "🧘 Sensei Météo",
+      "description": "Phrases inspirantes et sages",
+      "title": "☔ Sagesse Météo - {location}",
+      "rainMessages": [
+        "La pluie tombe, toi aussi, apporte un parapluie.",
+        "Comme les gouttes qui s'adaptent au vent, adapte-toi au temps qu'il fait.",
+        "Le sage prévoit la pluie et prépare son imperméable.",
+        "Ne lutte pas contre la pluie, danse avec elle sous ton parapluie.",
+        "La pluie nettoie la terre, ton parapluie protège ton chemin.",
+        "Accepte ce que tu ne peux changer. Aujourd'hui, c'est la pluie.",
+        "Un parapluie dans ton sac vaut mieux qu'un regret sous l'averse.",
+        "La pluie arrive, le sage s'équipe, l'insouciant se mouille."
+      ],
+      "normalMessages": [
+        "Le ciel est clément aujourd'hui, profite de cette harmonie.",
+        "Un ciel dégagé est comme un esprit apaisé.",
+        "Apprécie ce temps favorable, demain sera peut-être différent."
+      ]
+    },
+    {
+      "id": "quebecois",
+      "name": "🍁 Québécois",
+      "description": "Expressions typiquement québécoises",
+      "title": "⚡ Météo Québec - {location}",
+      "rainMessages": [
+        "Ça mouille en sivouplais dehors! Oublie pas ton parapluie là!",
+        "Y tombe des clous! Sors pas sans ton coat de pluie.",
+        "C'est pas le temps de niaiser, ça va mouiller en tabarouette!",
+        "Le bon Dieu pisse su'l monde aujourd'hui. Équipe-toi comme du monde!",
+        "Ça déboule en masse! T'es mieux d'avoir ton parapluie mon chum.",
+        "Y pleut à boire deboute! Habille-toi en conséquence là!",
+        "Ça tombe drette en bâtard! Pars pas sans te couvrir.",
+        "Méchante averse en vue! Fais attention à toé là."
+      ],
+      "normalMessages": [
+        "Y fait beau en crisse! Profites-en donc!",
+        "Pas une goutte à l'horizon. C'est l'fun en titi!",
+        "Beau temps pour aller faire un tour. Profite de ta journée!"
+      ]
+    }
+  ]
+}

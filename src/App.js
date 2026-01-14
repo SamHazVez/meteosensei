@@ -49,8 +49,13 @@ export default function App() {
           isCityNotificationEnabled(cityId) && 
           !hasNotifiedTodayForCity(cityId) && 
           getPermissionStatus() === 'granted') {
-        const message = generateRainNotificationMessage(analysis);
-        sendRainAlert(`${city.name}: ${message}`, analysis.condition);
+        const weatherData = {
+          location: city.name,
+          condition: analysis.condition,
+          temperature: analysis.temperature
+        };
+        
+        sendRainAlert(true, weatherData);
         markNotificationSentForCity(cityId);
       }
     } catch (err) {

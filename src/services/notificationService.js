@@ -3,6 +3,8 @@
  * Gère les permissions et l'envoi de notifications
  */
 
+import { generateNotificationMessage, getTheme, NOTIFICATION_THEMES } from '../data/notificationThemes';
+
 /**
  * Vérifie si les notifications sont supportées
  * @returns {boolean}
@@ -82,22 +84,27 @@ export function sendNotification(title, options = {}) {
 }
 
 /**
- * Envoie une notification d'alerte de pluie
- * @param {string} message
- * @param {string} details
+ * Envoie une notification d'alerte de pluie avec message personnalisé selon le thème
+ * @param {boolean} isRaining
+ * @param {Object} weatherData
  */
-export function sendRainAlert(message, details = '') {
+export function sendRainAlert(isRaining, weatherData = null) {
+  const themeId = getNotificationTheme();
+  const includeWeatherDetails = getIncludeWeatherDetails();
+  const message = generateNotificationMessage(themeId, isRaining, weatherData, includeWeatherDetails);
+  
   const options = {
-    body: details,
+    body: message.body,
     icon: '/meteosensei/icons/icon-192x192.png',
     tag: 'rain-alert',
     data: {
-      type: 'rain',
-      timestamp: Date.now()
+      type: isRaining ? 'rain' : 'weather',
+      timestamp: Date.now(),
+      theme: themeId
     }
   };
   
-  return sendNotification(message, options);
+  return sendNotification(message.title, options);
 }
 
 /**
@@ -209,8 +216,52 @@ export function hasNotifiedTodayForCity(cityId) {
 
 /**
  * Marque qu'une notification a été envoyée aujourd'hui pour une ville
- * @param {string} cityId - ID de la ville
+ * @param {string} cityId
  */
 export function markNotificationSentForCity(cityId) {
   localStorage.setItem(`lastRainNotification-${cityId}`, Date.now().toString());
+}
+
+/**
+ * Récupère le thème de notification sélectionné
+ * @returns {string}
+ */
+export function getNotificationTheme() {
+  return localStorage.getItem('notificationTheme') || 'sensei';
+}
+
+/**
+ * Définit le thème de notification
+ * @param {string} themeId
+ */
+export function setNotificationTheme(themeId) {
+  const theme = getTheme(themeId);
+  if (theme) {
+    localStorage.setItem('notificationTheme', themeId);
+  }
+}
+
+/**
+ * Récupère la liste de tous les thèmes disponibles
+ * @returns {Array}
+ */
+export function getAvailableThemes() {
+  return NOTIFICATION_THEMES;
+}
+
+/**
+ * Récupère le paramètre d'inclusion des détails météo
+ * @returns {boolean}
+ */
+export function getIncludeWeatherDetails() {
+  const value = localStorage.getItem('includeWeatherDetails');
+  return value === null ? true : value === 'true';
+}
+
+/**
+ * Définit le paramètre d'inclusion des détails météo
+ * @param {boolean} include
+ */
+export function setIncludeWeatherDetails(include) {
+  localStorage.setItem('includeWeatherDetails', include.toString());
 }

@@ -12,7 +12,13 @@ import {
   getNotificationCities,
   addNotificationCity,
   removeNotificationCity,
-  isCityNotificationEnabled
+  isCityNotificationEnabled,
+  getNotificationTheme,
+  setNotificationTheme,
+  getAvailableThemes,
+  sendRainAlert,
+  getIncludeWeatherDetails,
+  setIncludeWeatherDetails
 } from '../services/notificationService';
 
 function Settings() {
@@ -20,6 +26,9 @@ function Settings() {
   const [requesting, setRequesting] = useState(false);
   const [notificationCities, setNotificationCities] = useState(getNotificationCities());
   const [showCitySelector, setShowCitySelector] = useState(false);
+  const [selectedTheme, setSelectedTheme] = useState(getNotificationTheme());
+  const [availableThemes] = useState(getAvailableThemes());
+  const [includeWeatherDetails, setIncludeWeatherDetailsState] = useState(getIncludeWeatherDetails());
 
   useEffect(() => {
     setPermissionStatus(getPermissionStatus());
@@ -56,10 +65,13 @@ function Settings() {
     const randomCity = notificationCities[Math.floor(Math.random() * notificationCities.length)];
     const cityName = getCityName(randomCity);
     
-    sendNotification(`🧪 Test - ${cityName}`, {
-      body: '☔ Alerte pluie : Averses modérées prévues - Ceci est un test',
-      tag: 'test-notification'
-    });
+    const weatherData = {
+      location: cityName,
+      condition: 'Averses modérées',
+      temperature: 15
+    };
+    
+    sendRainAlert(true, weatherData);
   };
 
   const handleToggleCity = (cityId) => {
@@ -69,6 +81,17 @@ function Settings() {
       addNotificationCity(cityId);
     }
     setNotificationCities(getNotificationCities());
+  };
+
+  const handleThemeChange = (themeId) => {
+    setNotificationTheme(themeId);
+    setSelectedTheme(themeId);
+  };
+
+  const handleToggleWeatherDetails = () => {
+    const newValue = !includeWeatherDetails;
+    setIncludeWeatherDetails(newValue);
+    setIncludeWeatherDetailsState(newValue);
   };
 
   const getCityName = (cityId) => {
@@ -90,6 +113,60 @@ function Settings() {
   return (
     <div className="settings">
       <h3>⚙️ Notifications</h3>
+      
+      <div className="theme-selector" style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+        <h4 style={{ fontSize: '14px', marginBottom: '10px' }}>🎨 Thème des notifications</h4>
+        <div className="theme-options">
+          {availableThemes.map(theme => (
+            <label 
+              key={theme.id} 
+              className="theme-option"
+              style={{
+                display: 'block',
+                padding: '10px',
+                marginBottom: '8px',
+                backgroundColor: selectedTheme === theme.id ? '#e3f2fd' : 'white',
+                border: selectedTheme === theme.id ? '2px solid #2196F3' : '1px solid #ddd',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+            >
+              <input
+                type="radio"
+                name="notificationTheme"
+                value={theme.id}
+                checked={selectedTheme === theme.id}
+                onChange={() => handleThemeChange(theme.id)}
+                style={{ marginRight: '8px' }}
+              />
+              <span style={{ fontWeight: selectedTheme === theme.id ? 'bold' : 'normal' }}>
+                {theme.name}
+              </span>
+              <div style={{ fontSize: '12px', color: '#666', marginLeft: '24px', marginTop: '4px' }}>
+                {theme.description}
+              </div>
+            </label>
+          ))}
+        </div>
+      </div>
+      
+      <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+        <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', gap: '10px' }}>
+          <input
+            type="checkbox"
+            checked={includeWeatherDetails}
+            onChange={handleToggleWeatherDetails}
+            style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: '#2196F3' }}
+          />
+          <div>
+            <div style={{ fontWeight: '600', fontSize: '14px' }}>📊 Inclure les détails météo</div>
+            <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>
+              Affiche la condition et la température dans les notifications
+            </div>
+          </div>
+        </label>
+      </div>
       
       {permissionStatus === 'default' && (
         <div className="notification-prompt">

@@ -505,3 +505,61 @@ body {
   background: #5568d3;
 }
 
+/* Sélecteur de thème de notification */
+.theme-selector {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.theme-selector h4 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: 600;
+}
+
+.theme-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.theme-option {
+  display: block;
+  padding: 10px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.theme-option:hover {
+  background: #f8f9fa;
+  transform: translateX(2px);
+}
+
+.theme-option input[type="radio"] {
+  margin-right: 8px;
+  cursor: pointer;
+  accent-color: #2196F3;
+}
+
+.theme-option.selected {
+  background: #e3f2fd;
+  border: 2px solid #2196F3;
+}
+
+.theme-option span {
+  font-weight: normal;
+  user-select: none;
+}
+
+.theme-option .theme-description {
+  font-size: 12px;
+  color: #666;
+  margin-left: 24px;
+  margin-top: 4px;
+}
