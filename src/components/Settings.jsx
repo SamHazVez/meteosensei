@@ -94,6 +94,19 @@ function Settings() {
     setIncludeWeatherDetailsState(newValue);
   };
 
+  const handleResetNotifications = () => {
+    if (window.confirm('Réinitialiser toutes les notifications ? Cela permettra de recevoir à nouveau des alertes pour toutes les villes surveillées aujourd\'hui.')) {      
+      notificationCities.forEach(cityId => {
+        localStorage.removeItem(`lastRainNotification-${cityId}`);
+      });
+      
+      sendNotification('🔄 Notifications réinitialisées', {
+        body: 'Vous pourrez recevoir de nouvelles alertes pluie.',
+        tag: 'reset-notification'
+      });
+    }
+  };
+
   const getCityName = (cityId) => {
     const city = quebecCities.find(c => c.id === cityId);
     return city ? city.name : cityId;
@@ -224,6 +237,15 @@ function Settings() {
               className="btn-secondary"
             >
               🧪 Test
+            </button>
+            
+            <button 
+              onClick={handleResetNotifications}
+              className="btn-secondary"
+              style={{ marginLeft: '10px' }}
+              title="Réinitialiser les notifications pour recevoir à nouveau des alertes aujourd'hui"
+            >
+              🔄 Reset
             </button>
           </div>
 

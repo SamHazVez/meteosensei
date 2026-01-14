@@ -108,38 +108,6 @@ export function sendRainAlert(isRaining, weatherData = null) {
 }
 
 /**
- * Vérifie si une notification a déjà été envoyée aujourd'hui
- * @returns {boolean}
- */
-export function hasNotifiedToday() {
-  const lastNotification = localStorage.getItem('lastRainNotification');
-  if (!lastNotification) return false;
-  
-  const lastDate = new Date(parseInt(lastNotification));
-  const today = new Date();
-  
-  return (
-    lastDate.getDate() === today.getDate() &&
-    lastDate.getMonth() === today.getMonth() &&
-    lastDate.getFullYear() === today.getFullYear()
-  );
-}
-
-/**
- * Marque qu'une notification a été envoyée aujourd'hui
- */
-export function markNotificationSent() {
-  localStorage.setItem('lastRainNotification', Date.now().toString());
-}
-
-/**
- * Réinitialise le marqueur de notification
- */
-export function resetNotificationMarker() {
-  localStorage.removeItem('lastRainNotification');
-}
-
-/**
  * Récupère la liste des villes surveillées pour les notifications
  * @returns {Array<string>}
  */

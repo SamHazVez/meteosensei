@@ -34,21 +34,27 @@ function ShortcutsGuide({ onClose }) {
 
           <section className="guide-section">
             <h3>⚡ Étape 2: Créer le raccourci</h3>
+            <div className="guide-warning" style={{ marginBottom: '16px' }}>
+              <strong>⚠️ Important:</strong> Les PWA n'apparaissent pas dans la liste des apps iOS. 
+              Il faut utiliser l'URL de l'app.
+            </div>
+            
             <ol className="guide-steps">
               <li>Ouvrez l'app <strong>Raccourcis</strong> (préinstallée sur iOS)</li>
               <li>Appuyez sur le bouton <strong>+</strong> en haut à droite</li>
               <li>Appuyez sur <strong>Ajouter une action</strong></li>
-              <li>Cherchez et sélectionnez <strong>Ouvrir une App</strong></li>
-              <li>Choisissez <strong>MeteoSensei</strong> dans la liste</li>
+              <li>Cherchez et sélectionnez <strong>Ouvrir une URL</strong></li>
+              <li>Dans le champ URL, entrez: <code style={{ background: '#f5f5f5', padding: '2px 6px', borderRadius: '4px', fontSize: '13px' }}>http://samhazvez.github.io/meteosensei</code></li>
               <li>Ajoutez une autre action: <strong>Attendre</strong></li>
-              <li>Réglez le délai à <strong>5 secondes</strong></li>
-              <li>Ajoutez une dernière action: <strong>Fermer l'app</strong></li>
+              <li>Réglez le délai à <strong>10 secondes</strong></li>
               <li>Nommez le raccourci: <strong>"Vérifier météo"</strong></li>
+              <li>Appuyez sur <strong>OK</strong></li>
             </ol>
 
             <div className="guide-tip">
-              <strong>💡 Astuce:</strong> Le raccourci ouvre l'app, attend qu'elle vérifie la météo, 
-              puis la ferme automatiquement.
+              <strong>💡 Astuce:</strong> Le raccourci ouvre l'app via son URL, attend 10 secondes 
+              qu'elle vérifie toutes les villes surveillées, puis se ferme automatiquement quand vous 
+              changez d'app ou verrouillez l'écran.
             </div>
           </section>
 
@@ -99,8 +105,10 @@ function ShortcutsGuide({ onClose }) {
                 <strong>L'automatisation ne fonctionne pas?</strong>
                 <ul>
                   <li>Vérifiez que "Demander avant d'exécuter" est désactivé</li>
-                  <li>Assurez-vous que l'app MeteoSensei est bien installée sur l'écran d'accueil</li>
+                  <li>Assurez-vous d'avoir utilisé <strong>"Ouvrir une URL"</strong> et non "Ouvrir une App"</li>
+                  <li>Vérifiez que l'URL est correcte: http://samhazvez.github.io/meteosensei</li>
                   <li>Testez le raccourci manuellement d'abord</li>
+                  <li>Attendez au moins 10 secondes pour que toutes les villes soient vérifiées</li>
                 </ul>
               </div>
             </div>
