@@ -7,9 +7,7 @@ export const quebecCities = [
   {
     id: 'quebec',
     name: 'Québec',
-    code: 'QC-133',
     rssUrl: 'https://meteo.gc.ca/rss/city/qc-133_f.xml',
-    coords: [46.8139, -71.2080]
   },
 ];
 

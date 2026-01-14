@@ -13,15 +13,6 @@ Application météo Progressive Web App (PWA) orientée Québec avec notificatio
 - ✅ **Fonctionne hors ligne** (après la première visite)
 - ✅ **Aucun backend requis** - entièrement statique
 
-## 🏙️ Villes couvertes
-
-- Montréal
-- Québec
-- Gatineau
-- Sherbrooke
-- Trois-Rivières
-- Saguenay
-
 ## 🚀 Démarrage rapide
 
 ### Installation
@@ -53,7 +44,7 @@ npm run deploy
 ## 🛠️ Technologies utilisées
 
 - **React** - Framework UI
-- **Leaflet / React-Leaflet** - Cartographie interactive
+- **Leaflet / React-Leaflet** - Carte interactive
 - **Service Worker** - PWA et cache offline
 - **RSS ECCC** - Données météorologiques officielles
 - **GitHub Pages** - Hébergement statique
