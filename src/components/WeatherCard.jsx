@@ -32,14 +32,14 @@ function WeatherCard({ weatherAnalysis, loading, error }) {
     );
   }
 
-  const { location, today, rain, updated } = weatherAnalysis;
+  const { location, condition, temperature, isRaining, tonight, updated } = weatherAnalysis;
 
   return (
     <div className="weather-card">
       <div className="weather-header">
         <h2>{location.split('-')[0].trim()}</h2>
         <small>
-          Mis à jour: {new Date(updated).toLocaleTimeString('fr-CA', { 
+          {new Date(updated).toLocaleTimeString('fr-CA', { 
             hour: '2-digit', 
             minute: '2-digit' 
           })}
@@ -47,27 +47,24 @@ function WeatherCard({ weatherAnalysis, loading, error }) {
       </div>
 
       <div className="weather-today">
-        <h3>{today.title}</h3>
-        <p className="weather-summary">{today.summary}</p>
+        {temperature !== null && (
+          <div className="temperature">
+            <span className="temp-value">{temperature}°C</span>
+          </div>
+        )}
+        <h3 className="condition">{condition}</h3>
+        {isRaining && (
+          <div className="rain-alert">☔ Il pleut actuellement</div>
+        )}
       </div>
 
-      {rain.hasRain && (
-        <div className={`rain-alert ${rain.confidence}`}>
-          {rain.confidence === 'high' ? '☔' : '🌧️'}
-          <strong>
-            {rain.confidence === 'high' 
-              ? 'Pluie prévue aujourd\'hui' 
-              : 'Risque de pluie'}
-          </strong>
-          {rain.probability && (
-            <span className="probability"> ({rain.probability}%)</span>
+      {tonight && (
+        <div className="weather-tonight">
+          <h4 className="tonight-header">🌙 Ce soir</h4>
+          <p className="tonight-title">{tonight.title}</p>
+          {tonight.minTemp !== null && (
+            <div className="tonight-temp">Min: {tonight.minTemp}°C</div>
           )}
-        </div>
-      )}
-
-      {!rain.hasRain && (
-        <div className="no-rain">
-          ☀️ <strong>Pas de pluie prévue aujourd'hui</strong>
         </div>
       )}
     </div>

@@ -42,22 +42,82 @@ function parseRSSToWeather(xmlText) {
   const title = xmlDoc.querySelector('feed > title')?.textContent || 'Météo';
   const updated = xmlDoc.querySelector('feed > updated')?.textContent || new Date().toISOString();
   
-  const entries = Array.from(xmlDoc.querySelectorAll('entry')).map(entry => {
-    const entryTitle = entry.querySelector('title')?.textContent || '';
-    const summary = entry.querySelector('summary')?.textContent || '';
-    const published = entry.querySelector('published')?.textContent || '';
-    
-    return {
-      title: entryTitle.trim(),
-      summary: summary.trim(),
-      published: published
-    };
-  });
+  const currentConditions = parseCurrentConditions(xmlDoc);
+  
+  const tonightForecast = parseTonightForecast(xmlDoc);
   
   return {
     location: title,
     updated: new Date(updated),
-    forecasts: entries
+    current: currentConditions,
+    tonight: tonightForecast
+  };
+}
+
+/**
+ * Parse les conditions actuelles
+ * @param {Document} xmlDoc - Document XML
+ * @returns {Object|null}
+ */
+function parseCurrentConditions(xmlDoc) {
+  const entry = Array.from(xmlDoc.querySelectorAll('entry'))
+    .find(entry => {
+      const category = entry.querySelector('category');
+      return category && category.getAttribute('term') === 'Conditions actuelles';
+    });
+  
+  if (!entry) return null;
+  
+  const entryTitle = entry.querySelector('title')?.textContent || '';
+  
+  let temperature = null;
+  const tempMatch = entryTitle.match(/(-?\d+,?\d*)\s*°C/);
+  if (tempMatch) {
+    temperature = parseFloat(tempMatch[1].replace(',', '.'));
+  }
+  
+  let condition = '';
+  const conditionMatch = entryTitle.match(/:\s*([^,]+)/);
+  if (conditionMatch) {
+    condition = conditionMatch[1].trim();
+  }
+  
+  return {
+    condition: condition,
+    temperature: temperature
+  };
+}
+
+/**
+ * Parse les prévisions du soir
+ * @param {Document} xmlDoc - Document XML
+ * @returns {Object|null}
+ */
+function parseTonightForecast(xmlDoc) {
+  const entry = Array.from(xmlDoc.querySelectorAll('entry'))
+    .find(entry => {
+      const category = entry.querySelector('category');
+      const title = entry.querySelector('title')?.textContent || '';
+      return category && 
+             category.getAttribute('term') === 'Prévisions météo' &&
+             (title.toLowerCase().includes('ce soir') || title.toLowerCase().includes('cette nuit'));
+    });
+  
+  if (!entry) return null;
+  
+  const title = entry.querySelector('title')?.textContent || '';
+  const summary = entry.querySelector('summary')?.textContent || '';
+  
+  let minTemp = null;
+  const minMatch = title.match(/minimum\s+(-?\d+)/i);
+  if (minMatch) {
+    minTemp = parseInt(minMatch[1]);
+  }
+  
+  return {
+    title: title,
+    summary: summary,
+    minTemp: minTemp
   };
 }
 

@@ -42,9 +42,9 @@ export default function App() {
       
       setWeatherAnalysis(analysis);
 
-      if (analysis.rain.hasRain && !hasNotifiedToday() && getPermissionStatus() === 'granted') {
+      if (analysis.isRaining && !hasNotifiedToday() && getPermissionStatus() === 'granted') {
         const message = generateRainNotificationMessage(analysis);
-        sendRainAlert(message, analysis.rain.details);
+        sendRainAlert(message, analysis.condition);
         markNotificationSent();
       }
     } catch (err) {
