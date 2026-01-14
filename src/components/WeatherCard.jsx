@@ -4,8 +4,10 @@
  */
 
 import React from 'react';
+import { isCityNotificationEnabled, addNotificationCity, removeNotificationCity } from '../services/notificationService';
+import { getCityById } from '../data/quebecCities';
 
-function WeatherCard({ weatherAnalysis, loading, error }) {
+function WeatherCard({ weatherAnalysis, loading, error, cityId, onWatchToggle }) {
   if (loading) {
     return (
       <div className="weather-card loading">
@@ -34,6 +36,43 @@ function WeatherCard({ weatherAnalysis, loading, error }) {
 
   const { location, condition, temperature, isRaining, tonight, updated } = weatherAnalysis;
 
+  const getECCCPageUrl = () => {
+    if (!cityId) return null;
+    
+    const city = getCityById(cityId);
+    if (!city) return null;
+    
+    if (city.coords) {
+      return `https://meteo.gc.ca/fr/location/index.html?coords=${city.coords.lat},${city.coords.lon}`;
+    }
+    
+    const rssUrl = city.rssUrl;
+    const coordMatch = rssUrl.match(/weather\/([\d.]+)_([-\d.]+)_f\.xml/);
+    
+    if (coordMatch) {
+      const [_, lat, lon] = coordMatch;
+      return `https://meteo.gc.ca/fr/location/index.html?coords=${lat},${lon}`;
+    }
+    
+    return 'https://meteo.gc.ca/';
+  };
+
+  const isWatched = cityId ? isCityNotificationEnabled(cityId) : false;
+
+  const handleWatchToggle = () => {
+    if (!cityId) return;
+    
+    if (isWatched) {
+      removeNotificationCity(cityId);
+    } else {
+      addNotificationCity(cityId);
+    }
+    
+    if (onWatchToggle) {
+      onWatchToggle();
+    }
+  };
+
   return (
     <div className="weather-card">
       <div className="weather-header">
@@ -44,6 +83,26 @@ function WeatherCard({ weatherAnalysis, loading, error }) {
             minute: '2-digit' 
           })}
         </small>
+      </div>
+
+      <div className="weather-actions">
+        <a 
+          href={getECCCPageUrl()} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="eccc-link"
+          title="Voir sur le site d'Environnement Canada"
+        >
+          🌐 Détails ECCC
+        </a>
+        
+        <button 
+          onClick={handleWatchToggle}
+          className={`watch-button ${isWatched ? 'watching' : ''}`}
+          title={isWatched ? 'Arrêter de surveiller cette ville' : 'Surveiller cette ville pour les notifications'}
+        >
+          {isWatched ? '🔔 Surveillée' : '🔕 Surveiller'}
+        </button>
       </div>
 
       <div className="weather-today">

@@ -30,6 +30,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showShortcutsGuide, setShowShortcutsGuide] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const loadWeather = async (cityId) => {
     setLoading(true);
@@ -155,9 +156,14 @@ export default function App() {
           weatherAnalysis={weatherAnalysis}
           loading={loading}
           error={error}
+          cityId={selectedCityId}
+          key={`weather-${refreshKey}`}
+          onWatchToggle={() => {
+            setRefreshKey(prev => prev + 1);
+          }}
         />
 
-        <Settings />
+        <Settings key={`settings-${refreshKey}`} />
       </main>
 
       <footer className="app-footer">

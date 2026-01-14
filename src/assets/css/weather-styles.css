@@ -173,6 +173,67 @@ body {
   font-size: 0.9rem;
 }
 
+/* Weather Actions */
+.weather-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.eccc-link {
+  flex: 1;
+  display: inline-block;
+  padding: 10px 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  min-width: 140px;
+}
+
+.eccc-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  opacity: 0.95;
+}
+
+.watch-button {
+  flex: 1;
+  padding: 10px 15px;
+  border: 2px solid #ddd;
+  background: white;
+  color: #666;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.watch-button:hover {
+  transform: translateY(-2px);
+  border-color: #667eea;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+.watch-button.watching {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  color: white;
+  border-color: #4caf50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.watch-button.watching:hover {
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
 .weather-today h3 {
   color: #667eea;
   margin: 0 0 10px 0;
