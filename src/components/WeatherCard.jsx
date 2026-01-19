@@ -85,6 +85,31 @@ function WeatherCard({ weatherAnalysis, loading, error, cityId, onWatchToggle })
         </small>
       </div>
 
+      <div className="weather-today">
+        {temperature !== null && (
+          <div className="temperature">
+            <span className="temp-value">{temperature}°C</span>
+          </div>
+        )}
+        <h3 className="condition">{condition}</h3>
+        {isRaining && (
+          <div className="rain-alert">☔ Il pleut actuellement</div>
+        )}
+        {weatherAnalysis.isSnowing && (
+          <div className="snow-alert">❄️ Il neige actuellement</div>
+        )}
+      </div>
+
+      {tonight && (
+        <div className="weather-tonight">
+          <h4 className="tonight-header">🌙 Ce soir</h4>
+          <p className="tonight-title">{tonight.title}</p>
+          {tonight.minTemp !== null && (
+            <div className="tonight-temp">Min: {tonight.minTemp}°C</div>
+          )}
+        </div>
+      )}
+
       <div className="weather-actions">
         <a 
           href={getECCCPageUrl()} 
@@ -106,28 +131,6 @@ function WeatherCard({ weatherAnalysis, loading, error, cityId, onWatchToggle })
           </button>
         )}
       </div>
-
-      <div className="weather-today">
-        {temperature !== null && (
-          <div className="temperature">
-            <span className="temp-value">{temperature}°C</span>
-          </div>
-        )}
-        <h3 className="condition">{condition}</h3>
-        {isRaining && (
-          <div className="rain-alert">☔ Il pleut actuellement</div>
-        )}
-      </div>
-
-      {tonight && (
-        <div className="weather-tonight">
-          <h4 className="tonight-header">🌙 Ce soir</h4>
-          <p className="tonight-title">{tonight.title}</p>
-          {tonight.minTemp !== null && (
-            <div className="tonight-temp">Min: {tonight.minTemp}°C</div>
-          )}
-        </div>
-      )}
     </div>
   );
 }

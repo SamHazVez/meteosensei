@@ -80,16 +80,6 @@ function ShortcutsGuide({ onClose }) {
           </section>
 
           <section className="guide-section">
-            <h3>✅ Recommandations</h3>
-            <ul className="guide-recommendations">
-              <li><strong>Matin:</strong> Automatisation à 7h00 pour planifier votre journée</li>
-              <li><strong>Soir:</strong> Automatisation à 18h00 pour le lendemain matin</li>
-              <li><strong>Vérification manuelle:</strong> Utilisez le bouton "Actualiser" dans l'application</li>
-              <li><strong>Batterie:</strong> L'automatisation consomme très peu de batterie (5-10 secondes)</li>
-            </ul>
-          </section>
-
-          <section className="guide-section">
             <h3>🔧 Dépannage</h3>
             <div className="guide-troubleshooting">
               <div className="troubleshooting-item">

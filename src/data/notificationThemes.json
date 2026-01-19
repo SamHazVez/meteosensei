@@ -15,10 +15,15 @@
         "Un parapluie dans ton sac vaut mieux qu'un regret sous l'averse.",
         "La pluie arrive, le sage s'équipe, l'insouciant se mouille."
       ],
-      "normalMessages": [
-        "Le ciel est clément aujourd'hui, profite de cette harmonie.",
-        "Un ciel dégagé est comme un esprit apaisé.",
-        "Apprécie ce temps favorable, demain sera peut-être différent."
+      "snowMessages": [
+        "Les flocons dansent, prépare-toi à cette valse hivernale.",
+        "Comme la neige qui recouvre la terre, protège-toi du froid.",
+        "Le sage anticipe la neige et s'habille chaudement.",
+        "Accueille l'hiver avec sérénité, mais n'oublie pas ton manteau.",
+        "La neige embellit le paysage, ton habit d'hiver protège ton corps.",
+        "Face à la tempête, le sage se prépare, l'imprudent grelotte.",
+        "Les flocons tombent doucement, mais le froid ne pardonne pas.",
+        "La nature s'habille de blanc, toi aussi, couvre-toi bien."
       ]
     },
     {
@@ -36,10 +41,15 @@
         "Ça tombe drette en bâtard! Pars pas sans te couvrir.",
         "Méchante averse en vue! Fais attention à toé là."
       ],
-      "normalMessages": [
-        "Y fait beau en crisse! Profites-en donc!",
-        "Pas une goutte à l'horizon. C'est l'fun en titi!",
-        "Beau temps pour aller faire un tour. Profite de ta journée!"
+      "snowMessages": [
+        "Ça tombe en tabarnak! Mets ton gros manteau pis tes bottes d'hiver!",
+        "Méchante bordée de neige à soir! Habille-toi chaudement mon homme!",
+        "Y neige comme un fou! Sors pas en p'tit linge là!",
+        "Ça va être blanc en crisse! Équipe-toi comme du monde!",
+        "Grosse tempête en vue! C'est pas le temps de faire le smatte!",
+        "Les flocons volent partout! Oublie pas ton tuque pis tes mitaines!",
+        "Ça tombe drette solide! Mets ton manteau d'hiver là!",
+        "Câlisse de tempête! Reste au chaud ou ben habille-toi comme y faut!"
       ]
     }
   ]

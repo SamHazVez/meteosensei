@@ -3,7 +3,7 @@
  * Gère les permissions et l'envoi de notifications
  */
 
-import { generateNotificationMessage, getTheme, NOTIFICATION_THEMES } from '../data/notificationThemes';
+import { generateNotificationMessage, getTheme, NOTIFICATION_THEMES, WEATHER_TYPES } from '../data/notificationThemes';
 
 /**
  * Vérifie si les notifications sont supportées
@@ -84,27 +84,46 @@ export function sendNotification(title, options = {}) {
 }
 
 /**
- * Envoie une notification d'alerte de pluie avec message personnalisé selon le thème
- * @param {boolean} isRaining
- * @param {Object} weatherData
+ * Envoie une notification d'alerte météo
+ * @param {string} weatherType - Type de condition (WEATHER_TYPES)
+ * @param {Object} weatherData - Données météo
+ * @returns {Notification|null}
  */
-export function sendRainAlert(isRaining, weatherData = null) {
+function sendWeatherAlert(weatherType, weatherData = null) {
   const themeId = getNotificationTheme();
   const includeWeatherDetails = getIncludeWeatherDetails();
-  const message = generateNotificationMessage(themeId, isRaining, weatherData, includeWeatherDetails);
+  const message = generateNotificationMessage(themeId, weatherType, weatherData, includeWeatherDetails);
   
   const options = {
     body: message.body,
     icon: '/meteosensei/icons/icon-192x192.png',
-    tag: 'rain-alert',
+    tag: `${weatherType}-alert`,
     data: {
-      type: isRaining ? 'rain' : 'weather',
+      type: weatherType,
       timestamp: Date.now(),
       theme: themeId
     }
   };
   
   return sendNotification(message.title, options);
+}
+
+/**
+ * Envoie une notification d'alerte de pluie
+ * @param {Object} weatherData
+ * @returns {Notification|null}
+ */
+export function sendRainAlert(weatherData = null) {
+  return sendWeatherAlert(WEATHER_TYPES.RAIN, weatherData);
+}
+
+/**
+ * Envoie une notification d'alerte de neige
+ * @param {Object} weatherData
+ * @returns {Notification|null}
+ */
+export function sendSnowAlert(weatherData = null) {
+  return sendWeatherAlert(WEATHER_TYPES.SNOW, weatherData);
 }
 
 /**

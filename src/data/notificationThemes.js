@@ -5,6 +5,11 @@
 
 import themesData from './notificationThemes.json';
 
+const WEATHER_TYPES = {
+  RAIN: 'rain',
+  SNOW: 'snow'
+};
+
 /**
  * Remplace les templates dans un message
  * @param {string} text - Texte avec templates
@@ -23,37 +28,34 @@ function replaceTemplates(text, weatherData) {
 /**
  * Génère un message à partir d'un thème JSON
  * @param {Object} themeData - Données du thème depuis JSON
- * @param {boolean} isRaining - Si il pleut
+ * @param {string} weatherType - Type de condition (WEATHER_TYPES)
  * @param {Object} weatherData - Données météo
  * @param {boolean} includeWeatherDetails - Inclure les détails météo
  * @returns {Object} { title, body }
  */
-function generateMessageFromTheme(themeData, isRaining, weatherData = null, includeWeatherDetails = true) {
-  const messages = isRaining ? themeData.rainMessages : themeData.normalMessages;
-  const bodyText = messages[Math.floor(Math.random() * messages.length)];
+function generateMessageFromTheme(themeData, weatherType, weatherData = null, includeWeatherDetails = true) {
+  const messagesKey = `${weatherType}Messages`;
+  const messages = themeData[messagesKey];
   
-  // Remplacer les templates dans le titre
-  let title = replaceTemplates(themeData.title || '☔ Météo', weatherData);
+  if (!messages || messages.length === 0) {
+    return { title: '⚠️ Alerte Météo', body: 'Conditions météo inhabituelles' };
+  }
+  
+  const bodyText = messages[Math.floor(Math.random() * messages.length)];
+  const title = replaceTemplates(themeData.title || '⚠️ Météo', weatherData);
   
   let finalBody = bodyText;
   
   if (includeWeatherDetails && weatherData) {
     const details = [];
-    if (weatherData.condition) {
-      details.push(weatherData.condition);
-    }
-    if (weatherData.temperature !== undefined) {
-      details.push(`${weatherData.temperature}°C`);
-    }
+    if (weatherData.condition) details.push(weatherData.condition);
+    if (weatherData.temperature !== undefined) details.push(`${weatherData.temperature}°C`);
     if (details.length > 0) {
       finalBody += `\n\n📊 ${details.join(' • ')}`;
     }
   }
   
-  return {
-    title: title,
-    body: finalBody
-  };
+  return { title, body: finalBody };
 }
 
 /**
@@ -63,15 +65,20 @@ const NOTIFICATION_THEMES = themesData.themes.map(themeData => ({
   id: themeData.id,
   name: themeData.name,
   description: themeData.description,
-  getRainMessage(weatherData, includeWeatherDetails = true) {
-    return generateMessageFromTheme(themeData, true, weatherData, includeWeatherDetails);
-  },
-  getNormalMessage(weatherData, includeWeatherDetails = true) {
-    return generateMessageFromTheme(themeData, false, weatherData, includeWeatherDetails);
+  
+  /**
+   * Génère un message pour un type de condition donné (extensible)
+   * @param {string} weatherType - Type de condition
+   * @param {Object} weatherData - Données météo
+   * @param {boolean} includeWeatherDetails - Inclure détails
+   * @returns {Object}
+   */
+  getMessage(weatherType, weatherData, includeWeatherDetails = true) {
+    return generateMessageFromTheme(themeData, weatherType, weatherData, includeWeatherDetails);
   }
 }));
 
-export { NOTIFICATION_THEMES };
+export { NOTIFICATION_THEMES, WEATHER_TYPES };
 
 /**
  * Récupère un thème par son ID
@@ -83,19 +90,14 @@ export function getTheme(themeId) {
 }
 
 /**
- * Génère un message de notification selon le thème et les conditions
- * @param {string} themeId
- * @param {boolean} isRaining
- * @param {Object} weatherData
- * @param {boolean} includeWeatherDetails
- * @returns {Object}
+ * Génère un message de notification selon le thème et le type de condition
+ * @param {string} themeId - ID du thème
+ * @param {string} weatherType - Type de condition (WEATHER_TYPES)
+ * @param {Object} weatherData - Données météo
+ * @param {boolean} includeWeatherDetails - Inclure détails
+ * @returns {Object} { title, body }
  */
-export function generateNotificationMessage(themeId, isRaining, weatherData = null, includeWeatherDetails = true) {
+export function generateNotificationMessage(themeId, weatherType, weatherData = null, includeWeatherDetails = true) {
   const theme = getTheme(themeId);
-  
-  if (isRaining) {
-    return theme.getRainMessage(weatherData, includeWeatherDetails);
-  } else {
-    return theme.getNormalMessage(weatherData, includeWeatherDetails);
-  }
+  return theme.getMessage(weatherType, weatherData, includeWeatherDetails);
 }

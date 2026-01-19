@@ -11,9 +11,10 @@ import Settings from "./components/Settings";
 import ShortcutsGuide from "./components/ShortcutsGuide";
 import { getDefaultCity, getCityById } from "./data/quebecCities";
 import { fetchWeatherRSS } from "./services/rssParser";
-import { analyzeWeather, generateRainNotificationMessage } from "./services/weatherAnalyzer";
+import { analyzeWeather, generateRainNotificationMessage, generateSnowNotificationMessage } from "./services/weatherAnalyzer";
 import { 
-  sendRainAlert, 
+  sendRainAlert,
+  sendSnowAlert,
   getPermissionStatus,
   isCityNotificationEnabled,
   hasNotifiedTodayForCity,
@@ -47,17 +48,25 @@ export default function App() {
       
       setWeatherAnalysis(analysis);
 
+      const notificationData = {
+        location: city.name,
+        condition: analysis.condition,
+        temperature: analysis.temperature
+      };
+
       if (analysis.isRaining && 
           isCityNotificationEnabled(cityId) && 
           !hasNotifiedTodayForCity(cityId) && 
           getPermissionStatus() === 'granted') {
-        const weatherData = {
-          location: city.name,
-          condition: analysis.condition,
-          temperature: analysis.temperature
-        };
-        
-        sendRainAlert(true, weatherData);
+        sendRainAlert(notificationData);
+        markNotificationSentForCity(cityId);
+      }
+
+      if (analysis.isSnowing && 
+          isCityNotificationEnabled(cityId) && 
+          !hasNotifiedTodayForCity(cityId) && 
+          getPermissionStatus() === 'granted') {
+        sendSnowAlert(notificationData);
         markNotificationSentForCity(cityId);
       }
     } catch (err) {
@@ -87,14 +96,17 @@ export default function App() {
         const weatherData = await fetchWeatherRSS(city.rssUrl);
         const analysis = analyzeWeather(weatherData);
 
+        const notificationData = {
+          location: city.name,
+          condition: analysis.condition,
+          temperature: analysis.temperature
+        };
+
         if (analysis.isRaining) {
-          const notificationData = {
-            location: city.name,
-            condition: analysis.condition,
-            temperature: analysis.temperature
-          };
-          
-          sendRainAlert(true, notificationData);
+          sendRainAlert(notificationData);
+          markNotificationSentForCity(cityId);
+        } else if (analysis.isSnowing) {
+          sendSnowAlert(notificationData);
           markNotificationSentForCity(cityId);
         }
       } catch (err) {

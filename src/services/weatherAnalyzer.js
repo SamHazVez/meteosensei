@@ -10,6 +10,15 @@ const RAIN_KEYWORDS = [
   'rain', 'showers', 'drizzle'
 ];
 
+const SNOW_KEYWORDS = [
+  'neige',
+  'flocon', 'flocons',
+  'poudrerie',
+  'giboulée', 'giboulées',
+  'snow', 'flurries',
+  'blizzard'
+];
+
 /**
  * Détecte si la condition actuelle est de la pluie
  * @param {string} condition - Condition météo
@@ -20,6 +29,18 @@ export function isRaining(condition) {
   
   const text = condition.toLowerCase();
   return RAIN_KEYWORDS.some(keyword => text.includes(keyword));
+}
+
+/**
+ * Détecte si la condition actuelle est de la neige
+ * @param {string} condition - Condition météo
+ * @returns {boolean}
+ */
+export function isSnowing(condition) {
+  if (!condition) return false;
+  
+  const text = condition.toLowerCase();
+  return SNOW_KEYWORDS.some(keyword => text.includes(keyword));
 }
 
 /**
@@ -37,6 +58,7 @@ export function analyzeWeather(weatherData) {
   
   const current = weatherData.current;
   const raining = isRaining(current.condition);
+  const snowing = isSnowing(current.condition);
   
   const hasTonight = weatherData.tonight !== null;
   
@@ -47,16 +69,27 @@ export function analyzeWeather(weatherData) {
     condition: current.condition,
     temperature: current.temperature,
     isRaining: raining,
+    isSnowing: snowing,
     tonight: hasTonight ? weatherData.tonight : null
   };
 }
 
 /**
- * Génère un message de notification
+ * Génère un message de notification pour la pluie
  * @param {Object} analysis - Résultat de analyzeWeather
  * @returns {string}
  */
 export function generateRainNotificationMessage(analysis) {
   const location = analysis.location.split('-')[0].trim();
   return `☔ Il pleut à ${location}`;
+}
+
+/**
+ * Génère un message de notification pour la neige
+ * @param {Object} analysis - Résultat de analyzeWeather
+ * @returns {string}
+ */
+export function generateSnowNotificationMessage(analysis) {
+  const location = analysis.location.split('-')[0].trim();
+  return `❄️ Il neige à ${location}`;
 }

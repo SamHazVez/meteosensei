@@ -200,7 +200,7 @@ function Settings() {
           
           <div style={{ marginTop: '15px' }}>
             <h4 style={{ fontSize: '14px', marginBottom: '10px' }}>
-              🏙️ Villes surveillées ({notificationCities.length})
+              Villes surveillées ({notificationCities.length})
             </h4>
             
             {notificationCities.length > 0 ? (
