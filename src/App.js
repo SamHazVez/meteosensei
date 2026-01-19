@@ -139,7 +139,6 @@ export default function App() {
 
         <div className="ios-automation-banner">
           <div className="banner-content">
-            <span className="banner-icon">📱</span>
             <div className="banner-text">
               <strong>Utilisateur iOS?</strong> Configurez l'automatisation pour des vérifications automatiques
             </div>

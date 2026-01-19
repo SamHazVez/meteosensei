@@ -10,7 +10,6 @@ function LocationSelector({ selectedCity, onCityChange }) {
   return (
     <div className="location-selector">
       <label htmlFor="city-select">
-        <span className="location-icon">📍</span>
         Ville :
       </label>
       <select

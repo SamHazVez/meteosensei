@@ -16,14 +16,14 @@ function ShortcutsGuide({ onClose }) {
         <div className="shortcuts-guide-body">
           <div className="guide-intro">
             <p className="guide-important">
-              💡 <strong>Important:</strong> Les PWA sur iOS ne peuvent pas envoyer de notifications automatiques 
-              en arrière-plan. Cette solution utilise l'app <strong>Raccourcis</strong> pour vérifier la météo 
+              💡 <strong>Important:</strong> Sur iPhone, l'application ne peut pas envoyer de notifications automatiques 
+              en arrière-plan. Cette solution utilise <strong>Raccourcis</strong> pour vérifier la météo 
               automatiquement.
             </p>
           </div>
 
           <section className="guide-section">
-            <h3>📱 Étape 1: Préparer l'app</h3>
+            <h3>📱 Étape 1: Préparer l'application</h3>
             <ol className="guide-steps">
               <li>Ouvrez MeteoSensei</li>
               <li>Allez dans <strong>Paramètres</strong></li>
@@ -35,12 +35,12 @@ function ShortcutsGuide({ onClose }) {
           <section className="guide-section">
             <h3>⚡ Étape 2: Créer le raccourci</h3>
             <div className="guide-warning" style={{ marginBottom: '16px' }}>
-              <strong>⚠️ Important:</strong> Les PWA n'apparaissent pas dans la liste des apps iOS. 
-              Il faut utiliser l'URL de l'app.
+              <strong>⚠️ Important:</strong> MeteoSensei n'apparaît pas dans la liste des applications iPhone. 
+              Il faut utiliser son adresse web.
             </div>
             
             <ol className="guide-steps">
-              <li>Ouvrez l'app <strong>Raccourcis</strong> (préinstallée sur iOS)</li>
+              <li>Ouvrez <strong>Raccourcis</strong> (préinstallé sur iPhone)</li>
               <li>Appuyez sur le bouton <strong>+</strong> en haut à droite</li>
               <li>Appuyez sur <strong>Ajouter une action</strong></li>
               <li>Cherchez et sélectionnez <strong>Ouvrir une URL</strong></li>
@@ -52,9 +52,9 @@ function ShortcutsGuide({ onClose }) {
             </ol>
 
             <div className="guide-tip">
-              <strong>💡 Astuce:</strong> Le raccourci ouvre l'app via son URL, attend 10 secondes 
+              <strong>💡 Astuce:</strong> Le raccourci ouvre l'application, attend 10 secondes 
               qu'elle vérifie toutes les villes surveillées, puis se ferme automatiquement quand vous 
-              changez d'app ou verrouillez l'écran.
+              changez d'application ou verrouillez l'écran.
             </div>
           </section>
 
@@ -84,7 +84,7 @@ function ShortcutsGuide({ onClose }) {
             <ul className="guide-recommendations">
               <li><strong>Matin:</strong> Automatisation à 7h00 pour planifier votre journée</li>
               <li><strong>Soir:</strong> Automatisation à 18h00 pour le lendemain matin</li>
-              <li><strong>Vérification manuelle:</strong> Utilisez le bouton "Actualiser" dans l'app</li>
+              <li><strong>Vérification manuelle:</strong> Utilisez le bouton "Actualiser" dans l'application</li>
               <li><strong>Batterie:</strong> L'automatisation consomme très peu de batterie (5-10 secondes)</li>
             </ul>
           </section>
@@ -95,9 +95,9 @@ function ShortcutsGuide({ onClose }) {
               <div className="troubleshooting-item">
                 <strong>Pas de notifications?</strong>
                 <ul>
-                  <li>Vérifiez que les notifications sont activées dans Réglages iOS</li>
+                  <li>Vérifiez que les notifications sont activées dans Réglages</li>
                   <li>Assurez-vous d'avoir sélectionné des villes à surveiller</li>
-                  <li>L'app ne notifie qu'une fois par jour par ville</li>
+                  <li>L'application ne notifie qu'une fois par jour par ville</li>
                 </ul>
               </div>
               
@@ -105,8 +105,8 @@ function ShortcutsGuide({ onClose }) {
                 <strong>L'automatisation ne fonctionne pas?</strong>
                 <ul>
                   <li>Vérifiez que "Demander avant d'exécuter" est désactivé</li>
-                  <li>Assurez-vous d'avoir utilisé <strong>"Ouvrir une URL"</strong> et non "Ouvrir une App"</li>
-                  <li>Vérifiez que l'URL est correcte: http://samhazvez.github.io/meteosensei</li>
+                  <li>Assurez-vous d'avoir utilisé <strong>"Ouvrir une URL"</strong> et non "Ouvrir une Application"</li>
+                  <li>Vérifiez que l'adresse web est correcte: http://samhazvez.github.io/meteosensei</li>
                   <li>Testez le raccourci manuellement d'abord</li>
                   <li>Attendez au moins 10 secondes pour que toutes les villes soient vérifiées</li>
                 </ul>

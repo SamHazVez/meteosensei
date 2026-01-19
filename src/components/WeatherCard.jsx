@@ -96,13 +96,15 @@ function WeatherCard({ weatherAnalysis, loading, error, cityId, onWatchToggle })
           🌐 Détails ECCC
         </a>
         
-        <button 
-          onClick={handleWatchToggle}
-          className={`watch-button ${isWatched ? 'watching' : ''}`}
-          title={isWatched ? 'Arrêter de surveiller cette ville' : 'Surveiller cette ville pour les notifications'}
-        >
-          {isWatched ? '🔔 Surveillée' : '🔕 Surveiller'}
-        </button>
+        {!isWatched && (
+          <button 
+            onClick={handleWatchToggle}
+            className="watch-button"
+            title="Surveiller cette ville pour les notifications"
+          >
+            🔕 Surveiller
+          </button>
+        )}
       </div>
 
       <div className="weather-today">
