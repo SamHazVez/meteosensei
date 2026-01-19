@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/meteosensei/static/css/main.32771a1f.css",
-    "main.js": "/meteosensei/static/js/main.17861382.js",
+    "main.css": "/meteosensei/static/css/main.3a6fc4ed.css",
+    "main.js": "/meteosensei/static/js/main.60d7c42c.js",
     "index.html": "/meteosensei/index.html",
-    "main.32771a1f.css.map": "/meteosensei/static/css/main.32771a1f.css.map",
-    "main.17861382.js.map": "/meteosensei/static/js/main.17861382.js.map"
+    "main.3a6fc4ed.css.map": "/meteosensei/static/css/main.3a6fc4ed.css.map",
+    "main.60d7c42c.js.map": "/meteosensei/static/js/main.60d7c42c.js.map"
   },
   "entrypoints": [
-    "static/css/main.32771a1f.css",
-    "static/js/main.17861382.js"
+    "static/css/main.3a6fc4ed.css",
+    "static/js/main.60d7c42c.js"
   ]
 }
